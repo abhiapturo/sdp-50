@@ -9,6 +9,7 @@ vesicle = {
 }
 
 def validate_symmetry(thicknesses):
+    """This function validates the symmetry between the five shell boundaries"""
     condition1 = thicknesses[0] == thicknesses[4]
     condition2 = thicknesses[1] == thicknesses[3]
 
