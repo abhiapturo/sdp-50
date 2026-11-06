@@ -1,47 +1,46 @@
-""" This is a small geometry calculator which converts
-fitted SAXS parameters into geometric quantities that can be
-used later in constraint equations
-"""
+"""This program is a five-shell vesicle geometry calculator"""
+
+import itertools
 import math
 
-# Parameters from the original SAXS fit (Angstroms)
-Rc = 305.18261
-t1 = 12.52633
-t2 = 18.273004
-t3 = 8.5981313
+vesicle = { 
+    "core_radius": 305.0,
+    "thicknesses": [10, 8, 18, 8, 10] # t1 = t5, t2 = t4, t3 = independent
+}
 
-# Calculate each shell boundary
-Ri = Rc + t1
-Rf = Ri + t2
-Ro = Rf + t3
+def validate_symmetry(thicknesses):
+    condition1 = thicknesses[0] == thicknesses[4]
+    condition2 = thicknesses[1] == thicknesses[3]
+
+    return condition1 and condition2
+
+def calculate_radii(core_radius, thicknesses):
+    """This function returns a list of six radii: core radius
+      and the five shell boundaries"""
+    
+    # Accumulate starting with core radius
+    result = list(
+        itertools.accumulate(
+            thicknesses, 
+            initial=core_radius
+        )
+    )
+    return result # returns a list with six radii: core radius and five boundaries
 
 def sphere_volume(radius):
-    """ This function returns the volume of a sphere """
-    return (4 / 3) * math.pi * radius**3
+    """This function calculates the volume of a sphere"""
+    return (4/3)*math.pi*(radius ** 3)
+
+def shell_volume(inner_radius, outer_radius):
+    """This function calculates the difference between two sphere volumes"""
+    return sphere_volume(outer_radius) - sphere_volume(inner_radius)
 
 def sphere_area(radius):
-    """This function returns the area of a sphere"""
-    return 4 * math.pi * radius**2
+    """This function calculates the area of a sphere"""
+    return 4*math.pi*(radius ** 2)
 
-# Calculate volumes of the three shells
-V_inner = sphere_volume(Ri) - sphere_volume(Rc)
-V_tails = sphere_volume(Rf) - sphere_volume(Ri)
-V_outer = sphere_volume(Ro) - sphere_volume(Rf)
-
-# Calculate reference interfacial areas
-A_inner = sphere_area(Ri)
-A_outer = sphere_area(Rf)
-
-print("VESICLE GEOMETRY")
-print(f"Core radius: {Rc:.3f} Å")
-print(f"Outer radius: {Ro:.3f} Å")
-print(f"Membrane thickness: {Ro - Rc:.3f} Å")
-
-print("\nSHELL VOLUMES")
-print(f"Inner headgroups: {V_inner:.3f} Å³")
-print(f"Hydrocarbon region: {V_tails:.3f} Å³")
-print(f"Outer headgroups: {V_outer:.3f} Å³")
-
-print("\nINTERFACIAL AREAS")
-print(f"Inner interface: {A_inner:.3f} Å²")
-print(f"Outer interface: {A_outer:.3f} Å²")
+if __name__ == "__main__":
+    print(calculate_radii(vesicle["core_radius"], vesicle["thicknesses"]))
+    print(validate_symmetry(vesicle["thicknesses"]))
+                   
+                
