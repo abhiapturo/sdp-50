@@ -134,7 +134,7 @@ def main():
         print(f"{name:25s} {value:.8g}")
     print(f"{'chi-square':25s} {chisq:.8g}")
 
-    # Dependent parameters don't necessarily appear in problem.labels().
+ 
     thicknesses = [getattr(model, f"thickness{i}").value for i in range(1, 6)]
     slds = [getattr(model, f"sld{i}").value for i in range(1, 6)]
     print("\nALL SHELL VALUES")
