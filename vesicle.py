@@ -152,15 +152,13 @@ def analyze_vesicle(core_radius, thicknesses):
     volume_valid = validate_volume(radii, volumes)
 
     # Display the results
-    print("\nFive shell vesicle geometry")
-    print("-" * 70)
+    print("\n[FIVE SHELL VESICLE GEOMETRY]")
 
     print(f"Core radius: {core_radius:.3f} Å")
     print(f"Outer radius: {radii[-1]:.3f} Å")
     print(f"Total membrane thickness: {radii[-1] - core_radius:.3f} Å")
 
-    print("\nShell Geometry")
-    print("-" * 70)
+    print("\n[SHELL GEOMETRY]")
 
     print(
         f"{'Shell':<8}"
@@ -179,8 +177,7 @@ def analyze_vesicle(core_radius, thicknesses):
             f"{volumes[i]:<18.3f}"
         )
 
-    print("\nShell Surface Areas")
-    print("-" * 70)
+    print("\n[SHELL SURFACE AREAS]")
 
     print(
         f"{'Shell':<8}"
@@ -197,8 +194,7 @@ def analyze_vesicle(core_radius, thicknesses):
             f"{outer_area:<20.3f}"
         )
 
-    print("\nVolume information")
-    print("-" * 70)
+    print("\n[VOLUME INFORMATION]")
 
     print(f"Sum of shell volumes: {sum(volumes):.3f} Å³")
     print(
@@ -206,8 +202,7 @@ def analyze_vesicle(core_radius, thicknesses):
         f"{shell_volume(radii[0], radii[-1]):.3f} Å³"
     )
 
-    print("\nValidation")
-    print("-" * 70)
+    print("\n[VALIDATION]")
 
     print(f"Shell 1 = Shell 5: {math.isclose(thicknesses[0], thicknesses[4], rel_tol=1e-6)}")
     print(f"Shell 2 = Shell 4: {math.isclose(thicknesses[1], thicknesses[3], rel_tol=1e-6)}")
